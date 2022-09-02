@@ -13,7 +13,7 @@ import fs
 
 #定义常量 请根据实际情况调整
 #BASE_PATH电影文件路径,程序使用fs模块可以支持多种文件系统.示例用smb来演示
-BASE_PATH = 'smb://guest:@192.168.1.1:139/disk/movies/Samaritan.2022.1080p.WEBRip.x265-RARBG/'
+BASE_PATH = 'smb://guest:@192.168.1.1:139/disk/movies/Top.Gun.Maverick.2022.IMAX.2160p.WEB-DL.x265.8bit.SDR.DDP5.1.Atmos-PLZPLZPROPER/'
 #匹配os.path.splitext的extension格式
 MOVIE_TARGET = ['.mp4','.avi','.rmvb','.mkv']
 #fs.walke filter的匹配模式
@@ -116,7 +116,7 @@ try:
                 list_sub_country = []   # 初始定义字幕国家语言列表为空
                 list_def_sub_path = find_sub(list_sub_folder[0])   # 遍历字幕文件夹文件得到字幕列表
                 for i in range(len(list_def_sub_path)):
-                    extension = os.path.splitext(list_def_sub_path[i])
+                    extension = os.path.splitext(list_def_sub_path[i])[1]
                     list_sub_sfx.append(extension)
                     sub_country = check_sub_country(list_def_sub_path[i])
                     if sub_country is not None:
@@ -124,7 +124,8 @@ try:
                         list_sub_path.append(list_def_sub_path[i])
                 if len(list_sub_path) == 0: # 判断语言字幕匹配结果为0
                     if all_unique(list_sub_sfx):    # 判断是否默认字幕(如果每种字幕文件有且只有一个则判断为英文默认字幕)
-                        print('确认电影  '+list_movie_name[0]+' 存在默认字幕:'+list_def_sub_path)
+                        print('确认电影  '+list_movie_name[0]+' 找到默认字幕如下:')
+                        print(list_def_sub_path)
                         if input("回车键确认复制默认字幕/输入其他则退出") == '':
                             copy_def_subs(list_def_sub_path, list_movie_name[0])    # 复制默认字幕
                     else:   # 如果默认字幕判断失败
@@ -155,7 +156,7 @@ try:
                         list_movie_ep.append(movie_ep)    # 剧集列表追加
                         list_def_sub_path = find_ep_sub(list_sub_folder[0],movie_ep)# 遍历字幕文件夹文件得到字幕列表
                         for j in range(len(list_def_sub_path)):
-                            extension = os.path.splitext(list_def_sub_path[j])
+                            extension = os.path.splitext(list_def_sub_path[j])[1]
                             list_sub_sfx.append(extension)
                             sub_country = check_sub_country(list_def_sub_path[j])
                             if sub_country is not None:
@@ -163,7 +164,7 @@ try:
                                 list_sub_path.append(list_def_sub_path[j])
                         if len(list_sub_path) == 0: # 判断语言字幕匹配结果为0
                             if all_unique(list_sub_sfx):    # 判断是否默认字幕(如果每种字幕文件有且只有一个则判断为英文默认字幕)
-                                print('剧集'+movie_ep+'找到默认字幕')
+                                print('剧集'+movie_ep+'找到默认字幕如下:')
                                 print(list_def_sub_path)
                                 if input("回车键确认复制默认字幕/输入其他则退出") == '':
                                     copy_def_subs(list_def_sub_path, list_movie_name[i])    # 复制默认字幕
